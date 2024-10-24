@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>보드게임 추천</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input {
+            margin-right: 10px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .grid-item {
+            text-align: center;
+        }
+        img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        a {
+            display: block;
+            font-size: 18px;
+            text-decoration: none;
+        }
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .pagination a {
+            margin: 0 5px;
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>보드게임 추천</h1>
+    <form method="POST">
+        <label for="players">인원수:</label>
+        <input type="number" id="players" name="players" required>
+        <br>
+        <label for="playtime">플레이타임 (분):</label>
+        <input type="number" id="playtime" name="playtime" required>
+        <br><br>
+        <button type="submit">추천받기</button>
+    </form>
+
+    <h2>추천된 게임</h2>
+    <div class="grid-container">
+        {% if games %}
+            {% for game in games %}
+                <div class="grid-item">
+                    <img src="{{ game['thumbnail'] }}" alt="{{ game['name'] }}">
+                    <a href="https://boardgamegeek.com/boardgame/{{ game['id'] }}" target="_blank">{{ game['name'] }}</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>추천할 보드게임이 없습니다.</p>
+        {% endif %}
+    </div>
+
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="?page={{ page - 1 }}">&laquo; 이전</a>
+        {% endif %}
+        {% if page < total_pages %}
+            <a href="?page={{ page + 1 }}">다음 &raquo;</a>
+        {% endif %}
+    </div>
+</body>
+</html>
